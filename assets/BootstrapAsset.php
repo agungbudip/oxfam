@@ -13,23 +13,17 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AppAsset extends AssetBundle
+class BootstrapAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/font-awesome.css',
-        'css/ionicons.css',
-        'css/AdminLTE.min.css',
-        'css/skins/_all-skins.min.css',
-        'plugins/iCheck/flat/blue.css',
+        'bootstrap/css/bootstrap.min.css',
     ];
     public $js = [
-        'plugins/fastclick/fastclick.min.js',
-        'js/app.min.js',
+        'bootstrap/js/bootstrap.min.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'app\assets\BootstrapAsset',
+        'yii\web\JqueryAsset',
     ];
 }
