@@ -241,10 +241,11 @@ class User extends Component
             } else {
                 $log = "User '$id' logged in from $ip. Session not enabled.";
             }
+            
             Yii::info($log, __METHOD__);
             $this->afterLogin($identity, false, $duration);
         }
-
+        
         return !$this->getIsGuest();
     }
 
