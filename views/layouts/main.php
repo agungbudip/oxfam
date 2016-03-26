@@ -1,11 +1,14 @@
 <?php
 /* @var $this \yii\web\View */
 /* @var $content string */
+/* @var $pengguna \app\models\Pengguna */
 
 use yii\helpers\Html;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+$pengguna = Yii::$app->user->identity;
+$menu = Yii::$app->getSession()->hasFlash('menu') ? Yii::$app->getSession()->getFlash('menu') : '';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -17,7 +20,7 @@ AppAsset::register($this);
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">
+    <body class="hold-transition skin-blue fixed sidebar-mini">
         <?php $this->beginBody() ?>
 
         <div class="wrapper">
@@ -51,7 +54,7 @@ AppAsset::register($this);
                                             <li><!-- start message -->
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="<?= yii\helpers\BaseUrl::base()?>/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<?= yii\helpers\BaseUrl::base() ?>/img/avatar5.png" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Support Team
@@ -63,7 +66,7 @@ AppAsset::register($this);
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="<?= yii\helpers\BaseUrl::base()?>/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<?= yii\helpers\BaseUrl::base() ?>/img/user3-128x128.jpg" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         AdminLTE Design Team
@@ -75,7 +78,7 @@ AppAsset::register($this);
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="<?= yii\helpers\BaseUrl::base()?>/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<?= yii\helpers\BaseUrl::base() ?>/img/user4-128x128.jpg" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Developers
@@ -87,7 +90,7 @@ AppAsset::register($this);
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="<?= yii\helpers\BaseUrl::base()?>/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<?= yii\helpers\BaseUrl::base() ?>/img/user3-128x128.jpg" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Sales Department
@@ -99,7 +102,7 @@ AppAsset::register($this);
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="<?= yii\helpers\BaseUrl::base()?>/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<?= yii\helpers\BaseUrl::base() ?>/img/user4-128x128.jpg" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Reviewers
@@ -227,29 +230,17 @@ AppAsset::register($this);
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="<?= yii\helpers\BaseUrl::base()?>/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                    <span class="hidden-xs">Alexander Pierce</span>
+                                    <img src="<?= yii\helpers\BaseUrl::base() . $pengguna->gambar ?>" class="user-image" alt="User Image">
+                                    <span class="hidden-xs"><?= $pengguna->nama ?></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="<?= yii\helpers\BaseUrl::base()?>/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                        <img src="<?= yii\helpers\BaseUrl::base() . $pengguna->gambar ?>" class="img-circle" alt="User Image">
                                         <p>
-                                            Alexander Pierce - Web Developer
-                                            <small>Member since Nov. 2012</small>
+                                            <?= $pengguna->nama ?><br>
+                                            <small><b><?= strtoupper($pengguna->role) ?></b></small>
                                         </p>
-                                    </li>
-                                    <!-- Menu Body -->
-                                    <li class="user-body">
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
-                                        </div>
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
@@ -260,7 +251,7 @@ AppAsset::register($this);
                                             <?php
                                             echo Html::beginForm(['/site/logout'], 'post');
                                             echo Html::submitButton(
-                                            'Logout', ['class' => 'btn btn-default btn-flat']
+                                                    'Logout', ['class' => 'btn btn-default btn-flat']
                                             );
                                             echo Html::endForm();
                                             ?>
@@ -276,161 +267,24 @@ AppAsset::register($this);
             <aside class="main-sidebar">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
-                    <!-- Sidebar user panel -->
-                    <div class="user-panel">
-                        <div class="pull-left image">
-                            <img src="<?= yii\helpers\BaseUrl::base()?>/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                        </div>
-                        <div class="pull-left info">
-                            <p>Alexander Pierce</p>
-                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                        </div>
-                    </div>
-                    <!-- search form -->
-                    <form action="#" method="get" class="sidebar-form">
-                        <div class="input-group">
-                            <input type="text" name="q" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                    <!-- /.search form -->
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-                        <li class="header">MAIN NAVIGATION</li>
-                        <li class="active treeview">
-                            <a href="#">
-                                <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                                <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-files-o"></i>
-                                <span>Layout Options</span>
-                                <span class="label label-primary pull-right">4</span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-th"></i> <span>Widgets</span> <small class="label pull-right bg-green">new</small>
-                            </a>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-pie-chart"></i>
-                                <span>Charts</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Morris</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Flot</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-laptop"></i>
-                                <span>UI Elements</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Icons</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Buttons</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Sliders</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Timeline</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Modals</a></li>
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-edit"></i> <span>Forms</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> General Elements</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Editors</a></li>
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-table"></i> <span>Tables</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Data tables</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-calendar"></i> <span>Calendar</span>
-                                <small class="label pull-right bg-red">3</small>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-envelope"></i> <span>Mailbox</span>
-                                <small class="label pull-right bg-yellow">12</small>
-                            </a>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-folder"></i> <span>Examples</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Invoice</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Profile</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Login</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Register</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> 404 Error</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> 500 Error</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Blank Page</a></li>
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-share"></i> <span>Multilevel</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                                <li>
-                                    <a href="#"><i class="fa fa-circle-o"></i> Level One <i class="fa fa-angle-left pull-right"></i></a>
-                                    <ul class="treeview-menu">
-                                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-circle-o"></i> Level Two <i class="fa fa-angle-left pull-right"></i></a>
-                                            <ul class="treeview-menu">
-                                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-                        <li class="header">LABELS</li>
-                        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-                        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-                        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+                        <?php
+                        switch (strtolower($pengguna->role)) {
+                            case 'superadmin':
+                                echo $this->render('_superadmin', ['menu' => $menu]);
+                                break;
+                            case 'admin':
+                                echo $this->render('_admin', ['menu' => $menu]);
+                                break;
+                            case 'analis':
+                                echo $this->render('_analis', ['menu' => $menu]);
+                                break;
+                            case 'manager':
+                                echo $this->render('_manager', ['menu' => $menu]);
+                                break;
+                        }
+                        ?>
                     </ul>
                 </section>
                 <!-- /.sidebar -->
@@ -446,7 +300,7 @@ AppAsset::register($this);
             <div class="pull-right hidden-xs">
                 <b>Version</b> 2.3.0
             </div>
-            <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
+            <strong>Copyright &copy; <?= date('Y') ?> <a href="#"></a>.</strong> All rights reserved.
         </footer>
 
         <?php $this->endBody() ?>

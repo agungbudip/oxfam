@@ -7,12 +7,13 @@
 use yii\helpers\Html;
 ?>
 
-<!-- Main content -->
-<section class="content">
-    <div class="error-page">
-        <div class="error-content">
-            <h3><i class="fa fa-warning text-red"></i><b> <?= $exception->statusCode; ?></b> <?= nl2br(Html::encode($exception->getMessage())) ?></h3>
-        </div><!-- /.error-content -->
-    </div><!-- /.error-page -->
-</section><!-- /.content -->
-
+<div class="site-login">
+    <div class="login-box">
+        <div class="login-logo">
+            <a><i class="fa fa-warning text-red"></i><b> <?= $exception->statusCode; ?></b> <?= nl2br(Html::encode($exception->getMessage())) ?></a>
+        </div>
+        <p class="login-box-msg">
+            <a href="<?= \yii\helpers\Url::home()?>" class="btn btn-link">Kembali kehalaman utama</a>
+        </p>
+    </div>
+</div>

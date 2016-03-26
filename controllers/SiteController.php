@@ -7,7 +7,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\ForgotForm;
+use app\components\AccessRule;
 
 class SiteController extends Controller {
 
@@ -15,6 +16,9 @@ class SiteController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'only' => ['logout', 'index'],
                 'rules' => [
                     [
@@ -43,6 +47,7 @@ class SiteController extends Controller {
     }
 
     public function actionError() {
+        $this->layout = 'login';
         $exception = Yii::$app->errorHandler->exception;
         if ($exception !== null) {
             return $this->render('error', ['exception' => $exception]);
@@ -50,7 +55,11 @@ class SiteController extends Controller {
     }
 
     public function actionIndex() {
-        return $this->render('index');
+        $role = Yii::$app->user->identity->role;
+        switch ($role) {
+            case 'superadmin':
+                return $this->render('index');
+        }
     }
 
     public function actionLogin() {
@@ -61,10 +70,28 @@ class SiteController extends Controller {
         }
 
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
+
         return $this->render('login', [
+                    'model' => $model,
+        ]);
+    }
+
+    public function actionForgotpassword() {
+        $this->layout = 'login';
+        if (!\Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $model = new ForgotForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            Yii::$app->getSession()->setFlash('success', 'Silahkan periksa email anda');
+        }
+
+        return $this->render('forgot', [
                     'model' => $model,
         ]);
     }

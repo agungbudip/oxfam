@@ -23,6 +23,7 @@ class DashboardAsset extends AssetBundle
         'plugins/datepicker/datepicker3.css',
         'plugins/daterangepicker/daterangepicker-bs3.css',
         'plugins/morris/morris.css',
+        'css/checkbox.css',
     ];
     public $js = [
         'js/jquery-ui.min.js',

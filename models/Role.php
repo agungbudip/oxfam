@@ -5,19 +5,19 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "tim".
+ * This is the model class for table "role".
  *
  * @property integer $id
- * @property string $tim
+ * @property string $role
  */
-class Tim extends \yii\db\ActiveRecord
+class Role extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tim';
+        return 'role';
     }
 
     /**
@@ -26,8 +26,8 @@ class Tim extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tim'], 'required'],
-            [['tim'], 'string', 'max' => 50]
+            [['role'], 'required'],
+            [['role'], 'string', 'max' => 50]
         ];
     }
 
@@ -38,7 +38,7 @@ class Tim extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'tim' => 'Tim',
+            'role' => 'Role',
         ];
     }
 }

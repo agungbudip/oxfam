@@ -7,10 +7,6 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
-        'elephantio' => [
-            'class' => 'sammaye\elephantio\ElephantIo',
-            'host' => 'http://localhost:3000'
-        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'tq02dTiQEM3wbe1jWg0lKfakiuXIlsgX',
@@ -47,7 +43,13 @@ $config = [
             'showScriptName' => false,
             'baseUrl' => '/oxfam',
             'rules' => [
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
         ],
     ],
     'params' => $params,

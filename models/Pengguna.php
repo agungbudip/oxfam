@@ -9,9 +9,10 @@ use Yii;
  *
  * @property integer $id
  * @property string $nama
+ * @property string $gambar
  * @property string $alamat
- * @property integer $nomor_telpon
- * @property string $username
+ * @property string $nomor_telpon
+ * @property string $email
  * @property string $password
  * @property string $role
  * @property integer $tim
@@ -21,6 +22,8 @@ use Yii;
  * @property Tim $tim0
  */
 class Pengguna extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
+
+    public $file;
 
     /**
      * @inheritdoc
@@ -34,13 +37,15 @@ class Pengguna extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      */
     public function rules() {
         return [
-            [['nama', 'username', 'password', 'role'], 'required'],
-            [['alamat'], 'string'],
-            [['nomor_telpon', 'tim'], 'integer'],
-            [['nama'], 'string', 'max' => 200],
-            [['username', 'password', 'role'], 'string', 'max' => 50],
-            [['username'], 'unique'],
-            [['auth_key', 'access_token'], 'unique'],
+            [['nama', 'email', 'role'], 'required', 'message' => '{attribute} Tidak boleh kosong.'],
+            [['password'], 'required', 'message' => '{attribute} Tidak boleh kosong.', 'on' => 'insert'],
+            [['alamat', 'gambar', 'tim'], 'string'],
+            [['nama', 'nomor_telpon'], 'string', 'max' => 200, 'message' => '{attribute} Maximal 200 karakter.'],
+            [['email', 'password', 'role'], 'string', 'max' => 50, 'message' => '{attribute} Maximal 50 karakter.'],
+            [['email'], 'unique', 'message' => 'Email sudah di gunakan'],
+            //[['auth_key', 'access_token'], 'unique'],
+            [['file'], 'file', 'skipOnEmpty' => TRUE, 'extensions' => 'png, jpg'],
+            [['email'], 'email'],
         ];
     }
 
@@ -53,18 +58,27 @@ class Pengguna extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'nama' => 'Nama',
             'alamat' => 'Alamat',
             'nomor_telpon' => 'Nomor Telpon',
-            'username' => 'Username',
+            'email' => 'Email',
             'password' => 'Password',
             'role' => 'Role',
             'tim' => 'Tim',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTim0() {
-        return $this->hasOne(Tim::className(), ['id' => 'tim']);
+    public function upload() {
+        if (isset($this->file) && !$model->file->error) {
+            $path = \Yii::$app->basePath . '/uploads/';
+            $filename = $this->file->baseName . '.' . $this->file->extension;
+            $index = 1;
+            while (file_exists($path . $filename)) {
+                $filename = $this->file->baseName . '_' . $index . '.' . $this->file->extension;
+                $index++;
+            }
+            if ($this->file->saveAs($path . $filename)) {
+                $this->gambar = '/uploads/' . $filename;
+            }
+            $this->file = NULL;
+        }
     }
 
     public function getAuthKey() {
@@ -80,15 +94,15 @@ class Pengguna extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     }
 
     public function validatePassword($password) {
-        return $this->password == $password;
+        return $this->password == md5($password);
     }
 
     public static function findIdentity($id) {
         return self::findOne(['id' => $id]);
     }
 
-    public static function findByUsername($username) {
-        return static::findOne(['username' => $username]);
+    public static function findByUsername($email) {
+        return static::findOne(['email' => $email]);
     }
 
     public static function findIdentityByAccessToken($token, $type = null) {
