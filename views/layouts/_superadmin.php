@@ -21,11 +21,11 @@ switch (strtolower($menu)) {
 <li class="<?= $dashboard ?>">
     <a href="<?= yii\helpers\Url::home() ?>">
         <i class="fa fa-dashboard"></i> 
-        <span>Dashboard</span>
+        <span>Beranda</span>
     </a>
 </li>
 <li class="<?= $admin ?>">
-    <a href="<?= yii\helpers\Url::to(['admin/'])?>">
+    <a href="<?= yii\helpers\Url::to(['admin/manage']) ?>">
         <i class="fa fa-user"></i>
         <span>Admin</span>
     </a>

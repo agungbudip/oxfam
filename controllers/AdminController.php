@@ -20,7 +20,7 @@ class AdminController extends Controller {
                 'only' => ['index', 'manage', 'add', 'edit', 'delete'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'manage', 'add', 'edit', 'delete'],
+                        'actions' => ['index', 'manage', 'add', 'edit'],
                         'allow' => true,
                         'roles' => ['superadmin'],
                     ],
@@ -63,12 +63,23 @@ class AdminController extends Controller {
             $order = $_GET['order'];
         }
 
-        if(isset($_POST['id'])){
+        if (isset($_POST['id'])) {
             $ids = $_POST['id'];
             $pengguna = \app\models\Pengguna::deleteAll(['IN', 'id', $ids]);
             $this->refresh();
         }
-        
+
+        if (isset($_POST['hapus'])) {
+            $id = $_POST['hapus'];
+            $model = \app\models\Pengguna::findOne($id);
+            if ($model->delete()) {
+                Yii::$app->getSession()->setFlash('success', 'Data berhasil di hapus');
+            } else {
+                Yii::$app->getSession()->setFlash('success', 'Data gagal di hapus');
+            }
+            $this->redirect(['admin/manage']);
+        }
+
         $query = \app\models\Pengguna::find()
                 ->where(['role' => 'admin'])
                 ->andFilterWhere([
@@ -145,16 +156,6 @@ class AdminController extends Controller {
         }
 
         return $this->render('add', ['model' => $model, 'list_tim' => $list_tim]);
-    }
-
-    public function actionDelete($id) {
-        $model = \app\models\Pengguna::findOne($id);
-        if ($model->delete()) {
-            Yii::$app->getSession()->setFlash('success', 'Data berhasil di hapus');
-        } else {
-            Yii::$app->getSession()->setFlash('success', 'Data gagal di hapus');
-        }
-        $this->redirect(['admin/manage']);
     }
 
 }

@@ -14,17 +14,18 @@ $this->title = 'OXFAM - ' . $title;
 ?>
 <section class="content-header">
     <h1>
-        Admin
+        Pengguna
         <small><?= $title ?></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php Url::home() ?>"><i class="fa fa-dashboard"></i> Beranda</a></li>
-        <li>Admin</li>
+        <li>Pengguna</li>
         <li class="active"><?= $title ?></li>
     </ol>
 </section>
 
 <section class="content">
+    <?= $this->render('../partial/_alert'); ?>
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">&nbsp;</h3>
@@ -42,6 +43,7 @@ $this->title = 'OXFAM - ' . $title;
                     <?= $form->field($model, 'alamat', ['inputOptions' => ['placeholder' => 'Alamat'], 'horizontalCssClasses' => ['wrapper' => 'col-sm-9']])->textarea(); ?>
                     <?= $form->field($model, 'nomor_telpon', ['inputOptions' => ['placeholder' => 'Nomor Telpon'], 'horizontalCssClasses' => ['wrapper' => 'col-sm-9']]); ?>
                     <?= $form->field($model, 'tim', ['inputOptions' => ['placeholder' => 'Tim'], 'horizontalCssClasses' => ['wrapper' => 'col-sm-9']])->dropDownList($list_tim, ['prompt' => '--Tim--']); ?>
+                    <?= $form->field($model, 'role', ['inputOptions' => ['placeholder' => 'Role'], 'horizontalCssClasses' => ['wrapper' => 'col-sm-9']])->dropDownList($list_role, ['prompt' => '--Role--']); ?>
                 </div>
                 <div class="col-xs-6">
                     <div class="form-group">
@@ -55,7 +57,9 @@ $this->title = 'OXFAM - ' . $title;
         </div><!-- /.box-body -->
         <div class="box-footer">
             <button type="submit" class="btn btn-primary">Simpan</button>
-            <a href="<?= Url::to(['admin/manage']) ?>" class="btn btn-danger pull-right">Batal</a>
+            <?php if (!$model->isNewRecord) { ?>
+                <a href="<?= Url::to(['user/' . $model->role]) ?>" class="btn btn-danger pull-right">Batal</a>
+            <?php } ?>
         </div><!-- /.box-footer -->
 
         <?php ActiveForm::end(); ?>

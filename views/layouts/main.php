@@ -9,6 +9,7 @@ use app\assets\AppAsset;
 AppAsset::register($this);
 $pengguna = Yii::$app->user->identity;
 $menu = Yii::$app->getSession()->hasFlash('menu') ? Yii::$app->getSession()->getFlash('menu') : '';
+$submenu = Yii::$app->getSession()->hasFlash('menu') ? Yii::$app->getSession()->getFlash('submenu') : '';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -245,7 +246,7 @@ $menu = Yii::$app->getSession()->hasFlash('menu') ? Yii::$app->getSession()->get
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
                                         <div class="pull-left">
-                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                            <a href="<?= yii\helpers\Url::to(['site/profile']) ?>" class="btn btn-default btn-flat">Profile</a>
                                         </div>
                                         <div class="pull-right">
                                             <?php
@@ -272,16 +273,16 @@ $menu = Yii::$app->getSession()->hasFlash('menu') ? Yii::$app->getSession()->get
                         <?php
                         switch (strtolower($pengguna->role)) {
                             case 'superadmin':
-                                echo $this->render('_superadmin', ['menu' => $menu]);
+                                echo $this->render('_superadmin', ['menu' => $menu, 'submenu' => $submenu]);
                                 break;
                             case 'admin':
-                                echo $this->render('_admin', ['menu' => $menu]);
+                                echo $this->render('_admin', ['menu' => $menu, 'submenu' => $submenu]);
                                 break;
                             case 'analis':
-                                echo $this->render('_analis', ['menu' => $menu]);
+                                echo $this->render('_analis', ['menu' => $menu, 'submenu' => $submenu]);
                                 break;
                             case 'manager':
-                                echo $this->render('_manager', ['menu' => $menu]);
+                                echo $this->render('_manager', ['menu' => $menu, 'submenu' => $submenu]);
                                 break;
                         }
                         ?>

@@ -11,11 +11,11 @@ $this->registerJs("$.widget.bridge('uibutton', $.ui.button);", yii\web\View::POS
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Dashboard
-        <small>Control panel</small>
+        Beranda
+        <small></small>
     </h1>
     <ol class="breadcrumb">
-        <li class="active">Dashboard</li>
+        <li class="active">Beranda</li>
     </ol>
 </section>
 

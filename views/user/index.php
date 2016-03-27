@@ -7,19 +7,20 @@ use yii\helpers\Url;
 use yii\bootstrap\Html;
 use app\models\MyFunction;
 
-$this->title = 'OXFAM - Admin';
+$this->title = 'OXFAM - Pengguna';
 app\assets\CommonAsset::register($this);
 $this->registerJsFile(yii\helpers\BaseUrl::base() . '/js/filter/filter.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
 
 <section class="content-header">
     <h1>
-        Admin
-        <small></small>
+        Pengguna
+        <small><?= $role ?></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php yii\helpers\Url::home() ?>"><i class="fa fa-dashboard"></i> Beranda</a></li>
-        <li class="active">Admin</li>
+        <li>Pengguna</li>
+        <li class="active"><?= $role ?></li>
     </ol>
 </section>
 
@@ -34,7 +35,7 @@ $this->registerJsFile(yii\helpers\BaseUrl::base() . '/js/filter/filter.min.js', 
             <input type="hidden" name="page" id="filter_page" value="<?= $page ?>">
             <input type="hidden" name="order" id="filter_order" value="<?= $order ?>">
             <?php ActiveForm::end(); ?>
-            
+
             <?php $form = ActiveForm::begin(); ?>
             <div class="row">
                 <div class="col-xs-2">
@@ -57,7 +58,7 @@ $this->registerJsFile(yii\helpers\BaseUrl::base() . '/js/filter/filter.min.js', 
                 </div>
                 <div class="col-xs-7 pull-right">
                     <div class="btn-group pull-right">
-                        <a href="<?= Url::to(['admin/add']) ?>" class="btn btn-primary">Tambah</a>
+                        <a href="<?= Url::to(['user/add']) ?>" class="btn btn-primary">Tambah</a>
                         <button type="submit" class="btn btn-primary" onclick="return confirm('Yakin akan menghapus semua data ini?')">Hapus</button>
                     </div>
                 </div>
@@ -95,10 +96,11 @@ $this->registerJsFile(yii\helpers\BaseUrl::base() . '/js/filter/filter.min.js', 
                             <td><?= $m->nomor_telpon ?></td>
                             <td>
                                 <div class="btn-group pull-right">
-                                    <a href="<?= Url::to(['admin/edit/' . $m->id]) ?>" class="btn btn-primary" data-toggle="tooltip" title="Ubah"><i class="fa fa-gear"></i></a>
+                                    <a href="<?= Url::to(['user/edit/' . $m->id]) ?>" class="btn btn-primary" data-toggle="tooltip" title="Ubah"><i class="fa fa-gear"></i></a>
                                         <?=
                                         Html::submitButton(
                                                 '<i class="fa fa-trash"></i>', [
+                                            'formaction' => Url::to(['user/delete/' . $m->id]),
                                             'class' => 'btn btn-primary',
                                             'data-toggle' => 'tooltip',
                                             'title' => 'Hapus',

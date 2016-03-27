@@ -66,7 +66,7 @@ class Pengguna extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     }
 
     public function upload() {
-        if (isset($this->file) && !$model->file->error) {
+        if (isset($this->file) && !$this->file->error) {
             $path = \Yii::$app->basePath . '/uploads/';
             $filename = $this->file->baseName . '.' . $this->file->extension;
             $index = 1;

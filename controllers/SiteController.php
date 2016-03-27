@@ -19,10 +19,10 @@ class SiteController extends Controller {
                 'ruleConfig' => [
                     'class' => AccessRule::className(),
                 ],
-                'only' => ['logout', 'index'],
+                'only' => ['logout', 'index', 'profile'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'profile'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -58,6 +58,8 @@ class SiteController extends Controller {
         $role = Yii::$app->user->identity->role;
         switch ($role) {
             case 'superadmin':
+                return $this->render('index');
+            case 'admin':
                 return $this->render('index');
         }
     }
@@ -100,6 +102,36 @@ class SiteController extends Controller {
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionProfile() {
+        $id = Yii::$app->user->id;
+        $model = \app\models\Pengguna::findIdentity($id);
+
+        if (count($model) == 0) {
+            return $this->goHome();
+        }
+        $pass = $model->password;
+        $model->password = '';
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->file = \yii\web\UploadedFile::getInstance($model, 'file');
+            $model->upload();
+            if (is_null($model->password)) {
+                $model->password = $pass;
+            } else {
+                $model->password = md5($model->password);
+            }
+            if ($model->save()) {
+                Yii::$app->getSession()->setFlash('success', 'Data berhasil di ubah');
+                $this->redirect(['site/profile']);
+                Yii::$app->end();
+            } else {
+                Yii::$app->getSession()->setFlash('success', 'Data gagal di ubah');
+            }
+        }
+
+        echo $this->render('profile', ['model' => $model]);
     }
 
 }
